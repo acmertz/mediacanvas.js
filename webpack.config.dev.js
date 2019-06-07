@@ -1,5 +1,5 @@
 const path = require('path'),
-      CleanWebpackPlugin = require('clean-webpack-plugin');
+      { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
     mode: 'development',
@@ -8,7 +8,7 @@ module.exports = {
         contentBase: './'
     },
     plugins: [
-        new CleanWebpackPlugin(['dist'])
+        new CleanWebpackPlugin()
     ],
     devtool: 'eval-source-map',
     output: {
@@ -25,7 +25,7 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['env']
+                        presets: ['@babel/preset-env']
                     }
                 }
             }
