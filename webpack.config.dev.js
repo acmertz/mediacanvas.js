@@ -1,5 +1,5 @@
 const path = require('path'),
-    CleanWebpackPlugin = require('clean-webpack-plugin'),
+    { CleanWebpackPlugin } = require('clean-webpack-plugin'),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
