@@ -1,16 +1,22 @@
 const path = require('path'),
-      { CleanWebpackPlugin } = require('clean-webpack-plugin');
+    CleanWebpackPlugin = require('clean-webpack-plugin'),
+    HtmlWebpackPlugin = require('html-webpack-plugin'),
+    ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 module.exports = {
     mode: 'development',
     entry: './build.js',
-    devServer: {
-        contentBase: './'
-    },
-    plugins: [
-        new CleanWebpackPlugin()
-    ],
     devtool: 'eval-source-map',
+    plugins: [
+        new CleanWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            template: 'index.html',
+            inject: 'head'
+        }),
+        new ScriptExtHtmlWebpackPlugin({
+            defaultAttribute: 'defer'
+        })
+    ],
     output: {
         filename: 'mediacanvas.js',
         path: path.resolve(__dirname, 'dist'),
@@ -25,7 +31,7 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env']
+                        presets: ['@babel/env']
                     }
                 }
             }

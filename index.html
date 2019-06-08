@@ -5,93 +5,89 @@
         <meta name="viewport" content="width=device-width">
         <title>MediaCanvas.js</title>
         <style>
-            body{font-family:sans-serif}
-            .output {
-                display: block;
-                border: 1px dotted gray;
-                height: 400px;
-                width: 100%;
-                overflow-y: scroll;
-                overflow-x: auto;
-                background-color: #eee;
-            }
+            body{font-family:sans-serif;padding:2em}
+            .container{width:640px;max-width:100%;margin-left:auto;margin-right:auto;}
+            .display{background-color:#000;max-width:100%}
+            @media screen and (max-width: 1024px) {body{padding:1em}}
         </style>
-    </head>
-    <body>
-        <h1>MediaCanvas.js</h1>
-        <h2>Add media</h2>
-        <form>
-            <p>
-                <label>
-                    <span>URL:</span><br>
-                    <input type="url" name="url" value="https://placeimg.com/640/360/any" required>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <span>X (percent):</span><br>
-                    <input type="number" step="0.01" name="x" value="0" required>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <span>Y (percent):</span><br>
-                    <input type="number" step="0.01" name="y" value="0" required>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <span>Width (percent):</span><br>
-                    <input type="number" step="0.01" name="width" value="100" required>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <span>Height (percent):</span><br>
-                    <input type="number" step="0.01" name="height" value="100" required>
-                </label>
-            </p>
-            <p>
-                <input type="submit" value="Add" class="foo-button mdc-button">
-            </p>
-        </form>
-
-        <canvas width="640" height="360" style="background-color:#000"></canvas>
-
-        <script src="mediacanvas.js"></script>
         <script>
-            var example = new MediaCanvas(document.querySelector("canvas"));
-            var form = document.querySelector("form");
-            
-            form.addEventListener("submit", event => {
-                event.preventDefault();
-
-                // Add the media to the renderer
-                var url = document.querySelector("input[name=url]").value,
-                    x = parseInt(document.querySelector("input[name=x]").value, 10) / 100 * example.originalWidth,
-                    y = parseInt(document.querySelector("input[name=y]").value, 10) / 100 * example.originalHeight,
-                    width = parseInt(document.querySelector("input[name=width]").value, 10) / 100 * example.originalWidth,
-                    height = parseInt(document.querySelector("input[name=height]").value, 10) / 100 * example.originalHeight,
-                    img = new Image();
+            document.addEventListener("DOMContentLoaded", function (event) {
+                var example = new MediaCanvas(document.querySelector("canvas"));
+                var form = document.querySelector("form");
                 
-                img.addEventListener("load", () => {
-                    example.items.push({
-                        src: img,
-                        x,
-                        y,
-                        width,
-                        height
+                form.addEventListener("submit", event => {
+                    event.preventDefault();
+
+                    // Add the media to the renderer
+                    var url = document.querySelector("input[name=url]").value,
+                        x = parseInt(document.querySelector("input[name=x]").value, 10) / 100 * example.originalWidth,
+                        y = parseInt(document.querySelector("input[name=y]").value, 10) / 100 * example.originalHeight,
+                        width = parseInt(document.querySelector("input[name=width]").value, 10) / 100 * example.originalWidth,
+                        height = parseInt(document.querySelector("input[name=height]").value, 10) / 100 * example.originalHeight,
+                        img = new Image();
+                    
+                    img.addEventListener("load", () => {
+                        example.items.push({
+                            src: img,
+                            x,
+                            y,
+                            width,
+                            height
+                        });
+
+                        example.requestRender();
                     });
 
-                    example.requestRender();
-                });
+                    img.src = url;
 
-                img.src = url;
-
-                var urlEl = document.querySelector("input[name=url]");
-                if (urlEl.value.includes("https://placeimg.com/640/360/any"))
-                    urlEl.value = "https://placeimg.com/640/360/any?t=" + Date.now();
-            })
+                    var urlEl = document.querySelector("input[name=url]");
+                    if (urlEl.value.includes("https://placeimg.com/640/360/any"))
+                        urlEl.value = "https://placeimg.com/640/360/any?t=" + Date.now();
+                })
+            });
         </script>
+    </head>
+    <body>
+        <section class="container">
+            <h1>MediaCanvas.js</h1>
+            <h2>Add media</h2>
+            <form>
+                <p>
+                    <label>
+                        <span>URL:</span><br>
+                        <input type="url" name="url" value="https://placeimg.com/640/360/any" required>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <span>X (percent):</span><br>
+                        <input type="number" step="0.01" name="x" value="0" required>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <span>Y (percent):</span><br>
+                        <input type="number" step="0.01" name="y" value="0" required>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <span>Width (percent):</span><br>
+                        <input type="number" step="0.01" name="width" value="100" required>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <span>Height (percent):</span><br>
+                        <input type="number" step="0.01" name="height" value="100" required>
+                    </label>
+                </p>
+                <p>
+                    <input type="submit" value="Add" class="foo-button mdc-button">
+                </p>
+            </form>
+
+            <canvas class="display" width="640" height="360"></canvas>
+        </section>
     </body>
 </html>
